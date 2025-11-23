@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: interestelar-server
+    env: node
+    plan: free
+    region: oregon
+    buildCommand: 'npm install'
+    startCommand: 'node server-authoritative.js'
+    autoDeploy: true
+    envVars:
+      - key: JWT_SECRET
+        value: 'REPLACE_WITH_STRONG_SECRET'

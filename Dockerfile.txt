@@ -1,0 +1,25 @@
+# Dockerfile para Interestelar (servidor autoritativo)
+FROM node:18-alpine
+
+# Crear usuario no-root opcional (ligero y seguro)
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+WORKDIR /app
+
+# Copiar package.json primero para aprovechar caché de Docker
+COPY package*.json ./
+
+# Instalar dependencias (producción)
+RUN npm ci --production
+
+# Copiar el resto de archivos
+COPY . .
+
+# Cambiar a usuario no-root
+USER appuser
+
+# Exponer puerto (Render sobrescribirá con su PORT env si aplica)
+EXPOSE 3000
+
+# Comando por defecto
+CMD ["node", "server-authoritative.js"]
